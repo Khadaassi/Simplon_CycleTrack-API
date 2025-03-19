@@ -19,14 +19,14 @@ def create_tables():
         first_name TEXT NOT NULL,
         last_name TEXT NOT NULL,
         role   TEXT CHECK (role IN ('athlete', 'coach')) NOT NULL,
-        age INTEGER CHECK (age > 0),
-        weight REAL CHECK (weight > 0),
-        size REAL CHECK (size > 0),
-        power_max REAL CHECK (power_max > 0),
-        vo2max REAL CHECK (vo2max > 0),
-        hr_max REAL CHECK (hr_max > 0),
-        rf_max REAL CHECK (rf_max > 0),
-        cadence_max REAL CHECK (cadence_max > 0)
+        age INTEGER CHECK (age > 0) DEFAULT NULL,
+        weight REAL CHECK (weight > 0) DEFAULT NULL,
+        size REAL CHECK (size > 0) DEFAULT NULL,
+        power_max REAL CHECK (power_max > 0) DEFAULT NULL,
+        vo2max REAL CHECK (vo2max > 0) DEFAULT NULL,
+        hr_max REAL CHECK (hr_max > 0) DEFAULT NULL,
+        rf_max REAL CHECK (rf_max > 0) DEFAULT NULL,
+        cadence_max REAL CHECK (cadence_max > 0) DEFAULT NULL
     );
 
     CREATE TABLE IF NOT EXISTS performance (
