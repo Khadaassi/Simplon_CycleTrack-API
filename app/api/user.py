@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from app.db.CRUD.user import add_user, get_user_by_id, get_all_users, update_user, delete_user
 from app.schemas.user import UserCreate, UserRead, UserUpdate
+from app.core.security import get_current_user
 
 router = APIRouter()
 public_router = APIRouter()
@@ -19,7 +20,14 @@ def register_user(user: UserCreate, status_code=status.HTTP_201_CREATED):
     
 @router.get("/get/{user_id}", response_model=UserRead)
 def read_user(user_id: int):
-    user = dict(get_user_by_id(user_id=user_id))
+    user = get_user_by_id(user_id=user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return dict(user)
+
+@router.get("/self", response_model=UserRead)
+def read_user(current_user = Depends(get_current_user)):
+    user = dict(get_user_by_id(user_id=current_user))
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return user
