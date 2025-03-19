@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from app.api import authentication, performance, user
 from app.init_db import init_create_tables
+from app.core.security import get_current_user
 
 
 
@@ -13,8 +14,8 @@ tags_metadata = [
 ]
 
 app.include_router(authentication.router, prefix="", tags=["Auth"])
-app.include_router(user.router, prefix="/users", tags=["Users"])
-app.include_router(user.router, prefix="/perfs", tags=["Performances"])
+app.include_router(user.router, prefix="/users", tags=["Users"], dependencies=[Depends(get_current_user)])
+app.include_router(user.router, prefix="/perfs", tags=["Performances"], dependencies=[Depends(get_current_user)])
 
 @app.on_event("startup")
 def startup_event():

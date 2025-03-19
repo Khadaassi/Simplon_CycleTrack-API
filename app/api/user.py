@@ -1,11 +1,11 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 from app.db.CRUD.user import add_user, get_user_by_id
 from app.schemas.user import UserCreate, UserRead
 
 router = APIRouter()
 
 @router.post("/register")
-def register_user(user: UserCreate):
+def register_user(user: UserCreate, status_code=status.HTTP_201_CREATED):
     try:
         add_user(
             user.username, user.password, user.first_name, user.last_name, user.role,
