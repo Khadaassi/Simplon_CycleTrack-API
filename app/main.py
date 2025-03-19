@@ -17,7 +17,7 @@ tags_metadata = [
 app.include_router(authentication.router, prefix="", tags=["Auth"])
 app.include_router(user.router, prefix="/users", tags=["Users"], dependencies=[Depends(get_current_user)])
 app.include_router(user.public_router, prefix="/users", tags=["Public Users"])
-app.include_router(user.router, prefix="/perfs", tags=["Performances"], dependencies=[Depends(get_current_user)])
+app.include_router(performance.router, prefix="/perfs", tags=["Performances"], dependencies=[Depends(get_current_user)])
 
 @app.on_event("startup")
 def startup_event():

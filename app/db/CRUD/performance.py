@@ -18,10 +18,10 @@ def get_performance_by_id(performance_id):
     """Récupère une performance par son ID."""
     conn = get_db_connection()
     cursor = conn.cursor()
-    
+    print(f"perfomance_id : {performance_id}")
     cursor.execute("SELECT * FROM performance WHERE id = ?", (performance_id,))
     performance = cursor.fetchone()
-
+    print(f"perfomance : {performance}")
     conn.close()
     return performance
 

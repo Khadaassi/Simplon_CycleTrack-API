@@ -29,6 +29,7 @@ def create_performance(performance: PerformanceCreate):
 @router.get("/get/{performance_id}", response_model=PerformanceRead)
 def read_performance(performance_id: int):
     performance = get_performance_by_id(performance_id=performance_id)
+    print(dict(performance))
     if performance is None:
         raise HTTPException(status_code=404, detail="Performance not found")
     return dict(performance)
