@@ -57,6 +57,7 @@ def get_all_users():
     users = cursor.fetchall()
 
     conn.close()
+    print(users)
     return users
 
 def update_user(user_id, username=None, password=None, first_name=None, last_name=None, role=None, age=None, weight=None, size=None, vo2max=None, power_max=None, hr_max=None, rf_max=None, cadence_max=None):
@@ -72,7 +73,8 @@ def update_user(user_id, username=None, password=None, first_name=None, last_nam
         values.append(username)
     if password:
         fields.append("password = ?")
-        values.append(password)
+        hashed_password = hash_password(password)
+        values.append(hashed_password)
     if first_name:
         fields.append("first_name = ?")
         values.append(first_name)

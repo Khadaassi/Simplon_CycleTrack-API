@@ -10,11 +10,13 @@ app = FastAPI(title="CycleTrack", description="API de gestion de club de cyclism
 tags_metadata = [
     {"name": "Auth", "description": "Routes d'authentification"},
     {"name": "Users", "description": "Gestion des utilisateurs"},
+    {"name": "Public Users", "description": "Création d'utilisateurs"},
     {"name": "Performances", "description": "Gestion des performance"},
 ]
 
 app.include_router(authentication.router, prefix="", tags=["Auth"])
 app.include_router(user.router, prefix="/users", tags=["Users"], dependencies=[Depends(get_current_user)])
+app.include_router(user.public_router, prefix="/users", tags=["Public Users"])
 app.include_router(user.router, prefix="/perfs", tags=["Performances"], dependencies=[Depends(get_current_user)])
 
 @app.on_event("startup")

@@ -39,3 +39,18 @@ class UserConnection(BaseModel):
     """
     username: str  # username of the user
     password: str  # Plain text password for login
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    password: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    role: Optional[str] = None
+    age: Optional[int] = None
+    weight: Optional[float] = None
+    size: Optional[float] = None
+    vo2max: Optional[float] = None
+    power_max: Optional[float] = None
+    hr_max: Optional[float] = None
+    rf_max: Optional[float] = None
+    cadence_max: Optional[float] = None

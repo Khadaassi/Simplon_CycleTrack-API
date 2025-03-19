@@ -62,7 +62,6 @@ def verify_token(token: str) -> Dict:
     try:
         # Decode the token using the secret key and algorithm
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        print(payload)
         return payload
     except jwt.ExpiredSignatureError:
         # Raise an exception if the token is expired
@@ -100,10 +99,8 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> int:
     try:
         # Verify and decode the token, then extract user data from it
         user_data = verify_token(token)
-        print(user_data['sub'])
         # Query the user from the database using the decoded email
         user_id = dict(get_user_by_username(user_data['sub']))["id"]
-        print(f"debug :{user_id}")
         
         if user_id is None:
             # Raise exception if the user is not found in the database
