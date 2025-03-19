@@ -22,6 +22,16 @@ def get_user_by_id(user_id):
     conn.close()
     return user
 
+def get_user_by_username(user_username):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM user WHERE username = ?", (user_username,))
+    user = cursor.fetchone()
+
+    conn.close()
+    return user
+
 def get_all_users():
     conn = get_db_connection()
     cursor = conn.cursor()

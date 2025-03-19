@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from app.db.CRUD.user import add_user
-from app.schemas.user import UserCreate
+from app.db.CRUD.user import add_user, get_user_by_id
+from app.schemas.user import UserCreate, UserRead
 
 router = APIRouter()
 
@@ -15,3 +15,10 @@ def register_user(user: UserCreate):
         return {"message": "Utilisateur ajouté avec succès"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+@router.get("/{user_id}", response_model=UserRead)
+def read_user(user_id: int):
+    user = dict(get_user_by_id(user_id=user_id))
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
