@@ -1,13 +1,30 @@
 from app.db.database import get_db_connection
+import bcrypt
+
+
+def hash_password(password: str) -> str:
+    """
+    Hashes a given password using bcrypt to securely store it.
+
+    Args:
+        password (str): The plaintext password to hash.
+
+    Returns:
+        str: The hashed password as a string.
+    """
+    salt = bcrypt.gensalt()  # Generate a salt for hashing
+    hashed = bcrypt.hashpw(password.encode(), salt)  # Hash the password with the salt
+    return hashed.decode()  # Return the hashed password as a string
 
 def add_user(username, password, first_name, last_name, role, age=None, weight=None, size=None, vo2max=None, power_max=None, hr_max=None, rf_max=None, cadence_max=None):
     conn = get_db_connection()
     cursor = conn.cursor()
+    hashed_password = hash_password(password)
     
     cursor.execute("""
         INSERT INTO user (username, password, first_name, last_name, role, age, weight, size, vo2max, power_max, hr_max, rf_max, cadence_max)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (username, password, first_name, last_name, role, age, weight, size, vo2max, power_max, hr_max, rf_max, cadence_max))
+    """, (username, hashed_password, first_name, last_name, role, age, weight, size, vo2max, power_max, hr_max, rf_max, cadence_max))
 
     conn.commit()
     conn.close()
@@ -22,6 +39,16 @@ def get_user_by_id(user_id):
     conn.close()
     return user
 
+def get_user_by_username(user_username):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM user WHERE username = ?", (user_username,))
+    user = cursor.fetchone()
+
+    conn.close()
+    return user
+
 def get_all_users():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -30,6 +57,7 @@ def get_all_users():
     users = cursor.fetchall()
 
     conn.close()
+    print(users)
     return users
 
 def update_user(user_id, username=None, password=None, first_name=None, last_name=None, role=None, age=None, weight=None, size=None, vo2max=None, power_max=None, hr_max=None, rf_max=None, cadence_max=None):
@@ -45,7 +73,8 @@ def update_user(user_id, username=None, password=None, first_name=None, last_nam
         values.append(username)
     if password:
         fields.append("password = ?")
-        values.append(password)
+        hashed_password = hash_password(password)
+        values.append(hashed_password)
     if first_name:
         fields.append("first_name = ?")
         values.append(first_name)

@@ -1,5 +1,5 @@
-from db.database import create_tables
-from db.CRUD.user import add_user
+from app.db.database import create_tables
+from app.db.CRUD.user import add_user
 
 def init_create_tables():
     try:
