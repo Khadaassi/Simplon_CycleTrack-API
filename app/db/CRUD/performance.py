@@ -18,10 +18,10 @@ def get_performance_by_id(performance_id):
     """Récupère une performance par son ID."""
     conn = get_db_connection()
     cursor = conn.cursor()
-    
+    print(f"perfomance_id : {performance_id}")
     cursor.execute("SELECT * FROM performance WHERE id = ?", (performance_id,))
     performance = cursor.fetchone()
-
+    print(f"perfomance : {performance}")
     conn.close()
     return performance
 
@@ -83,3 +83,11 @@ def delete_performance(performance_id):
     
     conn.commit()
     conn.close()
+
+def get_performances_by_user(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM performance WHERE user_id = ?", (user_id,))
+    performances = cursor.fetchall()
+    conn.close()
+    return performances

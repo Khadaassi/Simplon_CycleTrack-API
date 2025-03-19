@@ -4,7 +4,8 @@ from app.db.CRUD.performance import (
     get_performance_by_id, 
     get_all_performances, 
     update_performance, 
-    delete_performance
+    delete_performance,
+    get_performances_by_user
 )
 from app.schemas.performance import PerformanceCreate, PerformanceRead, PerformanceUpdate
 
@@ -29,6 +30,7 @@ def create_performance(performance: PerformanceCreate):
 @router.get("/get/{performance_id}", response_model=PerformanceRead)
 def read_performance(performance_id: int):
     performance = get_performance_by_id(performance_id=performance_id)
+    print(dict(performance))
     if performance is None:
         raise HTTPException(status_code=404, detail="Performance not found")
     return dict(performance)
@@ -39,6 +41,17 @@ def read_all_performances():
     for sqliterow in get_all_performances():
         performance = dict(sqliterow)
         performances_dict[performance["id"]] = performance
+    return performances_dict
+
+@router.get("/user/{user_id}", response_model=dict)
+def get_user_performances(user_id: int):
+    performances = get_performances_by_user(user_id)
+    
+    performances_dict = {}
+    for sqliterow in performances:
+        performance = dict(sqliterow)
+        performances_dict[performance["id"]] = performance
+    
     return performances_dict
 
 @router.put("/update/{performance_id}", response_model=PerformanceRead)
