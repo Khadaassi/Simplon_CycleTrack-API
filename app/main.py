@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.api import authentication, performance, user
+from app.init_db import init_create_tables
 
 
 
@@ -14,3 +15,7 @@ tags_metadata = [
 app.include_router(authentication.router, prefix="", tags=["Auth"])
 app.include_router(user.router, prefix="/users", tags=["Users"])
 app.include_router(user.router, prefix="/perfs", tags=["Performances"])
+
+@app.on_event("startup")
+def startup_event():
+    init_create_tables()
