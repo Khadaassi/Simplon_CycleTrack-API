@@ -83,3 +83,11 @@ def delete_performance(performance_id):
     
     conn.commit()
     conn.close()
+
+def get_performances_by_user(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM performance WHERE user_id = ?", (user_id,))
+    performances = cursor.fetchall()
+    conn.close()
+    return performances
