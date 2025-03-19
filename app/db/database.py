@@ -38,7 +38,7 @@ def create_tables():
         hr_max REAL CHECK (hr_max > 0),
         rf_max REAL CHECK (rf_max > 0),
         cadence_max REAL CHECK (cadence_max > 0),
-        feeling INT CHECK (feeling >= 0 AND feeling <= 10),
+        feeling INT CHECK (feeling >= 0 AND feeling <= 10) DEFAULT NULL,
         FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
     );
     """)
