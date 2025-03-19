@@ -1,13 +1,30 @@
 from app.db.database import get_db_connection
+import bcrypt
+
+
+def hash_password(password: str) -> str:
+    """
+    Hashes a given password using bcrypt to securely store it.
+
+    Args:
+        password (str): The plaintext password to hash.
+
+    Returns:
+        str: The hashed password as a string.
+    """
+    salt = bcrypt.gensalt()  # Generate a salt for hashing
+    hashed = bcrypt.hashpw(password.encode(), salt)  # Hash the password with the salt
+    return hashed.decode()  # Return the hashed password as a string
 
 def add_user(username, password, first_name, last_name, role, age=None, weight=None, size=None, vo2max=None, power_max=None, hr_max=None, rf_max=None, cadence_max=None):
     conn = get_db_connection()
     cursor = conn.cursor()
+    hashed_password = hash_password(password)
     
     cursor.execute("""
         INSERT INTO user (username, password, first_name, last_name, role, age, weight, size, vo2max, power_max, hr_max, rf_max, cadence_max)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (username, password, first_name, last_name, role, age, weight, size, vo2max, power_max, hr_max, rf_max, cadence_max))
+    """, (username, hashed_password, first_name, last_name, role, age, weight, size, vo2max, power_max, hr_max, rf_max, cadence_max))
 
     conn.commit()
     conn.close()

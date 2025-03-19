@@ -12,7 +12,7 @@ def login(user: UserConnection):
         raise HTTPException(status_code=401, detail="This user is not registered")
     
     # If the password is incorrect
-    elif not verify_password(user.password, db_user.password):  
+    elif not verify_password(user.password, db_user["password"]):  
         raise HTTPException(status_code=401, detail="Incorrect password")
     
     # Generate an access token

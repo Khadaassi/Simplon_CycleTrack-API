@@ -124,17 +124,3 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
-
-def hash_password(password: str) -> str:
-    """
-    Hashes a given password using bcrypt to securely store it.
-
-    Args:
-        password (str): The plaintext password to hash.
-
-    Returns:
-        str: The hashed password as a string.
-    """
-    salt = bcrypt.gensalt()  # Generate a salt for hashing
-    hashed = bcrypt.hashpw(password.encode(), salt)  # Hash the password with the salt
-    return hashed.decode()  # Return the hashed password as a string
