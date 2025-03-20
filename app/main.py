@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
-from app.api import authentication, performance, user
-from app.init_db import init_create_tables
-from app.core.security import get_current_user
+from api import authentication, performance, user
+from init_db import init_create_tables
+from core.security import get_current_user
 
 
 
@@ -22,3 +22,7 @@ app.include_router(performance.router, prefix="/perfs", tags=["Performances"], d
 @app.on_event("startup")
 def startup_event():
     init_create_tables()
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

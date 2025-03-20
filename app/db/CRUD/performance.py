@@ -1,5 +1,5 @@
 import sqlite3
-from app.db.database import get_db_connection
+from db.database import get_db_connection
 
 def add_performance(user_id, power_max, vo2_max, hr_max, rf_max, cadence_max, feeling=None):
     """Ajoute une performance pour un utilisateur donné."""

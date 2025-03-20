@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from app.db.CRUD.performance import (
+from db.CRUD.performance import (
     add_performance, 
     get_performance_by_id, 
     get_all_performances, 
@@ -7,7 +7,7 @@ from app.db.CRUD.performance import (
     delete_performance,
     get_performances_by_user
 )
-from app.schemas.performance import PerformanceCreate, PerformanceRead, PerformanceUpdate
+from schemas.performance import PerformanceCreate, PerformanceRead, PerformanceUpdate
 
 router = APIRouter()
 

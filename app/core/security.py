@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 import jwt
 from fastapi.security import OAuth2PasswordBearer
-from app.db.CRUD.user import get_user_by_username
+from db.CRUD.user import get_user_by_username
 from passlib.context import CryptContext
 import bcrypt
 from typing import Dict

@@ -1,10 +1,10 @@
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 import pytest
 import sqlite3
-from app.db.database import get_db_connection
-from app.db.CRUD.performance import add_performance, get_performance_by_id, get_all_performances, update_performance, delete_performance
+from db.database import get_db_connection
+from db.CRUD.performance import add_performance, get_performance_by_id, get_all_performances, update_performance, delete_performance
 
 @pytest.fixture
 def setup_database():
