@@ -126,3 +126,5 @@ def delete_user(user_id):
     conn.commit()
 
     conn.close()
+
+
