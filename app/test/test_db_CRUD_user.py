@@ -1,11 +1,11 @@
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
 import pytest
 import sqlite3
-from app.db.database import get_db_connection
-from app.db.CRUD.user import add_user, get_user_by_id, get_all_users, update_user, delete_user
+from db.database import get_db_connection
+from db.CRUD.user import add_user, get_user_by_id, get_all_users, update_user, delete_user
 
 ### 🔹 Configuration de la base de test (exécutée avant chaque test)
 @pytest.fixture

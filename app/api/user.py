@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from app.db.CRUD.user import add_user, get_user_by_id, get_all_users, update_user, delete_user
-from app.schemas.user import UserCreate, UserRead, UserUpdate
-from app.core.security import get_current_user
+from db.CRUD.user import add_user, get_user_by_id, get_all_users, update_user, delete_user
+from schemas.user import UserCreate, UserRead, UserUpdate
+from core.security import get_current_user
 
 router = APIRouter()
 public_router = APIRouter()

@@ -12,8 +12,9 @@ def login():
     
     if st.button("Se connecter"):
         if username and password:
-            response = requests.post(f"{API_URL}/login", data={"username": username, "password": password})
-            
+            response = requests.post(f"{API_URL}/login", params={"username": username, "password": password})
+            print(f"{API_URL}/login")
+            print({"username": username, "password": password})
             if response.status_code == 200:
                 token = response.json()["access_token"]
                 st.session_state["token"] = token
