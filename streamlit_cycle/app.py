@@ -3,37 +3,16 @@ import requests
 
 API_URL = "http://0.0.0.0:8000"
 
-# st.image("images/banner.png", use_container_width=True)
 st.markdown(
     """
     <style>
-        /* Center the header and apply styling */
         .main-header {
             text-align: center;
             font-size: 2.5em;
-            color: #556B2F; /* Olive green */
+            color: #556B2F;
             font-weight: bold;
             margin-bottom: 30px;
             font-family: Arial, sans-serif;
-        }
-
-        /* Sidebar styling */
-        .sidebar .sidebar-content {
-            background-color: #f8f9f5; /* Light eucalyptus background */
-            padding: 20px;
-            border-right: 2px solid #d2d7c7; /* Soft olive border */
-        }
-
-        /* Dropdown styling */
-        .stSelectbox [data-baseweb="select"] {
-            border: 1px solid #556B2F; /* Olive green border */
-            border-radius: 5px;
-        }
-
-        /* General font styling for body */
-        body {
-            font-family: 'Arial', sans-serif;
-            color: #333333;
         }
     </style>
     """,
@@ -47,38 +26,62 @@ def login():
     st.title("Connexion 🔐")
     
     username = st.text_input("Nom d'utilisateur")
-    password = st.text_input("Mot de passe", type="password")
+    password = st.text_input("Mot de passe", type="password", key="password_input")
     
     if st.button("Se connecter"):
         if username and password:
             response = requests.post(f"{API_URL}/login", json={"username": username, "password": password})
-            print(f"{API_URL}/login")
-            print({"username": username, "password": password})
+            
             if response.status_code == 200:
                 token = response.json()["access_token"]
                 st.session_state["token"] = token
-                st.success("Connexion réussie !")
-                st.experimental_rerun() 
+                
+                # Récupérer les informations de l'utilisateur
+                headers = {"Authorization": f"Bearer {token}"}
+                user_response = requests.get(f"{API_URL}/users/self", headers=headers)
+
+                if user_response.status_code == 200:
+                    user = user_response.json()
+                    st.session_state["user"] = user  # Stocker l'utilisateur en session
+
+                    st.success(f"Connexion réussie ! Bienvenue {user['first_name']} {user['last_name']}")
+                    st.rerun()  # Redémarrer l'interface
+                else:
+                    st.error("Erreur lors de la récupération des informations utilisateur.")
             else:
                 st.error("Échec de la connexion, vérifiez vos identifiants")
+
+# Redirige l'utilisateur vers la bonne page en fonction de son rôle
+def redirect_user():
+    user = st.session_state.get("user")
+
+    if not user:
+        st.error("Impossible de récupérer les informations utilisateur.")
+        return
+
+    if user["role"].lower() == "coach":
+        st.switch_page("pages/Coach.py")
+    else:
+        st.switch_page("pages/Member.py")
 
 # Page d'accueil après connexion
 def home():
     st.title("Bienvenue sur CycleTrack 🚴‍♂️")
     
-    headers = {"Authorization": f"Bearer {st.session_state['token']}"}
-    response = requests.get(f"{API_URL}/users/self", headers=headers)
-    
-    if response.status_code == 200:
-        user = response.json()
-        st.write(f"👋 Bonjour, {user['first_name']} {user['last_name']} !")
-        st.write(f"**Rôle :** {user['role']}")
-    else:
-        st.error("Erreur lors de la récupération des informations utilisateur.")
-    
+    if "user" not in st.session_state:
+        st.error("Utilisateur non authentifié")
+        return
+
+    user = st.session_state["user"]
+    st.write(f"👋 Bonjour, {user['first_name']} {user['last_name']} !")
+    st.write(f"**Rôle :** {user['role']}")
+
+    # Redirection automatique
+    redirect_user()
+
     if st.button("Se déconnecter"):
         st.session_state.clear()
-        st.experimental_rerun()
+        st.rerun()
 
 # Gestion des pages
 if "token" not in st.session_state:
@@ -86,16 +89,6 @@ if "token" not in st.session_state:
 else:
     home()
 
-
-
-st.write("Welcome to the home page!")
-st.write("")
-left, right = st.columns(2)
-with left:
-     st.page_link(page="pages/Member.py",label="Member")
-
-with right:
-     st.page_link(page="pages/Coach.py",label="Coach")
 
 # st.markdown(
 #     """
