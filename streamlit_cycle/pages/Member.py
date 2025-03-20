@@ -48,8 +48,12 @@ if performance_response.status_code == 200:
                                 "hr_max": "Fréquence Cardiaque Max", "rf_max": "RF Max",
                                 "cadence_max": "Cadence Max", "feeling": "Feeling", "date": "Date"})
         
-        # Affichage du tableau
-        st.dataframe(df)
+        # Sélection de la colonne pour le tri
+        col_sort = st.selectbox("Trier par :", df.columns)
+
+        # Affichage du tableau avec tri dynamique
+        st.dataframe(df.sort_values(by=col_sort, ascending=True), use_container_width=True)
+
     else:
         st.info("Aucune performance enregistrée pour l'instant.")
 else:
