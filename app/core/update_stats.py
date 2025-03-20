@@ -34,9 +34,20 @@ def update_user_stats_new_perf(user_id: int, perf_id: int):
     updated_stats_list = []
     for i, item in enumerate(user_stats):
         if item:
-            updated_stats_list.append(max(item, new_perf[i]))
+            # Méthode barbare pour gérer les pb avec les csv
+            if isinstance(new_perf[i], bytes): 
+                new_item = 0
+            else:
+                new_item = new_perf[i]
+            updated_stats_list.append(max(item, new_item))
         else:
-            updated_stats_list.append(new_perf[i])
+            if isinstance(new_perf[i], bytes):
+                new_item = float(new_perf[i].decode())
+            else:
+                new_item = new_perf[i]
+            updated_stats_list.append(new_item)
+
+        
 
     # Comparer et mettre à jour les valeurs si nécessaire
     updated_stats = {
@@ -46,7 +57,6 @@ def update_user_stats_new_perf(user_id: int, perf_id: int):
         "rf_max": updated_stats_list[3],
         "cadence_max": updated_stats_list[4],
     }
-
     cursor.execute("""
         UPDATE user SET vo2max = ?, power_max = ?, hr_max = ?, rf_max = ?, cadence_max = ? WHERE id = ?
     """, (updated_stats["vo2max"], updated_stats["power_max"], updated_stats["hr_max"], updated_stats["rf_max"], updated_stats["cadence_max"], user_id))
