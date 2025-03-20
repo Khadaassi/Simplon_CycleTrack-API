@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-API_URL = "http://127.0.0.1:8000"
+API_URL = "http://0.0.0.0:8000"
 
 # Page de connexion
 def login():
@@ -12,7 +12,7 @@ def login():
     
     if st.button("Se connecter"):
         if username and password:
-            response = requests.post(f"{API_URL}/login", params={"username": username, "password": password})
+            response = requests.post(f"{API_URL}/login", json={"username": username, "password": password})
             print(f"{API_URL}/login")
             print({"username": username, "password": password})
             if response.status_code == 200:
