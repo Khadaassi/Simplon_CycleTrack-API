@@ -1,5 +1,6 @@
 import sqlite3
 from db.database import get_db_connection
+from core.update_stats import update_user_stats_new_perf
 
 def add_performance(user_id, power_max, vo2_max, hr_max, rf_max, cadence_max, feeling=None):
     """Ajoute une performance pour un utilisateur donné."""
@@ -10,9 +11,10 @@ def add_performance(user_id, power_max, vo2_max, hr_max, rf_max, cadence_max, fe
         INSERT INTO performance (user_id, power_max, vo2_max, hr_max, rf_max, cadence_max, feeling)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     """, (user_id, power_max, vo2_max, hr_max, rf_max, cadence_max, feeling))
-
+    perf_id = cursor.lastrowid
     conn.commit()
     conn.close()
+    update_user_stats_new_perf(user_id, perf_id)
 
 def get_performance_by_id(performance_id):
     """Récupère une performance par son ID."""
