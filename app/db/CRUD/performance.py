@@ -75,6 +75,9 @@ def update_performance(performance_id, power_max=None, vo2_max=None, hr_max=None
 
     conn.commit()
     conn.close()
+    user_id = get_performance_by_id(performance_id)["user_id"]
+
+    update_user_stats_new_perf(user_id, performance_id)
 
 def delete_performance(performance_id):
     """Supprime une performance par son ID."""
