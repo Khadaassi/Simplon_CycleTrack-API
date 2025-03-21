@@ -68,7 +68,7 @@ def create_from_csv():
             v_max.append(df["RF"].max())
             for item in v_max:
                 if isinstance(item, bytes):
-                    item = float(item.decode())
+                    item = 0
             print(f"Valeurs maximales pour {username} depuis {csv_file}: {v_max} (Types: {[type(v) for v in v_max]})")
             user_id = get_user_by_username(username)["id"]
             # Ajout de la performance dans la base de données

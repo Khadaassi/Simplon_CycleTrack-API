@@ -42,7 +42,7 @@ def update_user_stats_new_perf(user_id: int, perf_id: int):
             updated_stats_list.append(max(item, new_item))
         else:
             if isinstance(new_perf[i], bytes):
-                new_item = float(new_perf[i].decode())
+                new_item = 0
             else:
                 new_item = new_perf[i]
             updated_stats_list.append(new_item)

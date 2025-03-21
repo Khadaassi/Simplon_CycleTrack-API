@@ -44,6 +44,7 @@ if performance_response.status_code == 200:
         
         # Transformation des données en DataFrame
         df = pd.DataFrame.from_dict(performances, orient="index")
+        print(df.dtypes)
         df = df.rename(columns={"id": "ID", "power_max": "Puissance Max", "vo2_max": "VO2 Max",
                                 "hr_max": "Fréquence Cardiaque Max", "rf_max": "RF Max",
                                 "cadence_max": "Cadence Max", "feeling": "Feeling", "date": "Date"})
