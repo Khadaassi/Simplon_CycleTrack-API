@@ -2,10 +2,24 @@ from db.database import get_db_connection
 
 def update_user_stats_new_perf(user_id: int, perf_id: int):
     """
-    Met à jour les statistiques d'un utilisateur si la nouvelle performance est meilleure.
+    Updates a user's statistics if the new performance record contains better values.
     
-    :param user_id: ID de l'utilisateur
-    :param perf_id: ID de la performance récemment ajoutée
+    This function compares the user's current stats with the newly added performance values
+    and updates the user profile with the maximum values found. If the user has null values
+    for certain metrics, the corresponding values from the new performance will be used.
+    
+    Parameters:
+    ----------
+    user_id : int
+        The unique identifier of the user whose stats need to be updated
+    perf_id : int
+        The unique identifier of the recently added performance record
+    
+    Raises:
+    ------
+    ValueError
+        If the user with the specified ID is not found
+        If the performance with the specified ID is not found
     """
     conn = get_db_connection()
     cursor = conn.cursor()
