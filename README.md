@@ -33,7 +33,7 @@ L'API est développée avec **FastAPI** et utilise **SQLite** comme base de donn
 
 1. Cloner le dépôt :
 ```bash
-git clone https://github.com/votre-utilisateur/Simplon_CycleTrack-API.git
+git clone https://github.com/Khadaassi/Simplon_CycleTrack-API.git
 cd Simplon_CycleTrack-API
 ```
 
