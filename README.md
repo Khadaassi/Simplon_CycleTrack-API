@@ -55,7 +55,7 @@ python init_db.py
 
 5. Lancer l'application :
 ```bash
-uvicorn main:app --reload
+python app/main.py
 ```
 
 L'API est maintenant accessible à l'adresse `http://localhost:8000`.
