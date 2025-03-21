@@ -6,6 +6,13 @@ import json
 import pandas as pd
 
 def init_create_tables():
+    """
+    Initialize and create database tables.
+    
+    This function calls the create_tables() method to set up the database schema.
+    It prints a success message if tables are created successfully,
+    or an error message if an exception occurs.
+    """
     try:
         create_tables()
         print("Tables créés avec succés")
@@ -13,6 +20,18 @@ def init_create_tables():
         print(f"Pb lors de la création des tables :{e}")
 
 def create_coach():
+    """
+    Create a default coach user in the database.
+    
+    This function adds a coach user with predefined credentials:
+    - Username: supercoach
+    - Password: password
+    - Name: coach super
+    - Role: coach
+    
+    It prints a success message if the coach is added successfully,
+    or an error message if an exception occurs.
+    """
     try:
         add_user(username = "supercoach", password = "password", first_name="coach", last_name="super", role="coach")
         print("Coach ajouté avec succès")
@@ -25,6 +44,22 @@ DATA_FOLDER = os.path.join(BASE_DIR, "data_int")
 json_files = [f for f in os.listdir(DATA_FOLDER) if f.endswith(".json")]
 
 def create_from_csv():
+    """
+    Import user data and performance metrics from JSON and CSV files.
+    
+    This function:
+    1. Processes all JSON files in the data_int directory
+    2. Creates user accounts based on JSON data
+    3. Reads associated CSV files to extract performance metrics
+    4. Creates performance records for each user based on CSV data
+    
+    The function expects JSON files to contain user metadata and references to CSV files
+    that contain performance time series data. It extracts maximum values for various 
+    performance metrics (power, oxygen, heart rate, respiratory frequency, cadence)
+    and stores them in the database.
+    
+    CSV files must contain columns: Power, Oxygen, Cadence, HR, RF
+    """
     for json_file in json_files:
         json_path = os.path.join(DATA_FOLDER, json_file)
         with open(json_path, "r", encoding="utf-8") as file:

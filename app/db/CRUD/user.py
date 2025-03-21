@@ -17,6 +17,27 @@ def hash_password(password: str) -> str:
     return hashed.decode()  # Return the hashed password as a string
 
 def add_user(username, password, first_name, last_name, role, age=None, weight=None, size=None, vo2max=None, power_max=None, hr_max=None, rf_max=None, cadence_max=None):
+    """
+    Adds a new user to the database.
+
+    Args:
+        username (str): Unique username of the user.
+        password (str): Plaintext password (will be hashed before storing).
+        first_name (str): User's first name.
+        last_name (str): User's last name.
+        role (str): User's role ('athlete' or 'coach').
+        age (int, optional): User's age.
+        weight (float, optional): User's weight in kg.
+        size (float, optional): User's height in cm.
+        vo2max (float, optional): User's maximum oxygen uptake.
+        power_max (float, optional): User's maximum power output.
+        hr_max (float, optional): User's maximum heart rate.
+        rf_max (float, optional): User's respiratory frequency max.
+        cadence_max (float, optional): User's maximum cadence.
+
+    Returns:
+        None
+    """    
     conn = get_db_connection()
     cursor = conn.cursor()
     hashed_password = hash_password(password)
@@ -30,6 +51,15 @@ def add_user(username, password, first_name, last_name, role, age=None, weight=N
     conn.close()
 
 def get_user_by_id(user_id):
+    """
+    Retrieves a user from the database by their unique ID.
+
+    Args:
+        user_id (int): The ID of the user.
+
+    Returns:
+        sqlite3.Row: A row containing the user's data or None if not found.
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -40,6 +70,15 @@ def get_user_by_id(user_id):
     return user
 
 def get_user_by_username(user_username):
+    """
+    Retrieves a user from the database by their unique username.
+
+    Args:
+        user_username (str): The username of the user.
+
+    Returns:
+        sqlite3.Row: A row containing the user's data or None if not found.
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -50,6 +89,12 @@ def get_user_by_username(user_username):
     return user
 
 def get_all_users():
+    """
+    Retrieves all users from the database.
+
+    Returns:
+        list: A list of all users in the database.
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -61,6 +106,28 @@ def get_all_users():
     return users
 
 def update_user(user_id, username=None, password=None, first_name=None, last_name=None, role=None, age=None, weight=None, size=None, vo2max=None, power_max=None, hr_max=None, rf_max=None, cadence_max=None):
+    """
+    Updates user information dynamically in the database.
+
+    Args:
+        user_id (int): The ID of the user to update.
+        username (str, optional): Updated username.
+        password (str, optional): Updated password (will be hashed before storing).
+        first_name (str, optional): Updated first name.
+        last_name (str, optional): Updated last name.
+        role (str, optional): Updated role ('athlete' or 'coach').
+        age (int, optional): Updated age.
+        weight (float, optional): Updated weight.
+        size (float, optional): Updated height.
+        vo2max (float, optional): Updated VO2 max.
+        power_max (float, optional): Updated power max.
+        hr_max (float, optional): Updated heart rate max.
+        rf_max (float, optional): Updated respiratory frequency max.
+        cadence_max (float, optional): Updated cadence max.
+
+    Returns:
+        None
+    """    
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -119,6 +186,15 @@ def update_user(user_id, username=None, password=None, first_name=None, last_nam
     conn.close()
 
 def delete_user(user_id):
+    """
+    Deletes a user from the database by their unique ID.
+
+    Args:
+        user_id (int): The ID of the user to delete.
+
+    Returns:
+        None
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
 
